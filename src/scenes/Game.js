@@ -52,10 +52,10 @@ export default class Game extends Phaser.Scene{
         this.player.body.checkCollision.right = false;
 
         this.cameras.main.startFollow(this.player);
-        this.cameras.main.setDeadzone(this.scale.width*1.5);
+        this.cameras.main.setDeadzone(this.scale.width * 1.5);
     }
 
-    update(t, dt){
+    update(){
         const touchingDown = this.player.body.touching.down;
 
         if(touchingDown){
@@ -79,6 +79,24 @@ export default class Game extends Phaser.Scene{
             this.player.setVelocityX(200);
         }else{
             this.player.setVelocityX(0);
+        }
+
+        this.horizontalWrap(this.player);
+        
+    }
+    
+    /**
+     * 
+     * @param {Phaser.GameObjects.Sprite} sprite 
+     */
+    
+    horizontalWrap(sprite){
+        const halfWidth = sprite.displayWidth * 0.5;
+        const gameWidth = this.scale.width;
+        if (sprite.x < -halfWidth){
+            sprite.x = gameWidth + halfWidth;
+        }else if(sprite.x > gameWidth + halfWidth){
+            sprite.x = -halfWidth;
         }
     }
 }
