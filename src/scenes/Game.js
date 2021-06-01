@@ -30,9 +30,6 @@ export default class Game extends Phaser.Scene{
 
     create(){
         this.add.image(240, 320, 'background').setScrollFactor(1,0);
-        //this.add.image(240, 320, 'platform').setScale(0.5);
-        //this.physics.add.staticImage(240, 320, 'platform').setScale(0.5); 
-        
 
         this.platforms = this.physics.add.staticGroup();
 
@@ -51,13 +48,21 @@ export default class Game extends Phaser.Scene{
 
         this.player = this.physics.add.sprite(240, 320,'bunny-stand').setScale(0.5);
 
-        this.carrots = this.physics.add.group ({
-            classtype: Carrot
+        this.carrots = this.physics.add.group({
+            classType: Carrot
         })
-        this.carrots.get(240, 320, 'carrot');
+        //this.carrots.get(240,320,'carrot')
 
         this.physics.add.collider(this.platforms, this.player);
         this.physics.add.collider(this.platforms, this.carrots);
+
+        this.physics.add.overlap(
+            this.player,
+            this.carrots,
+            this.handleCollectCarrot,
+            undefined,
+            this
+        )
 
         this.player.body.checkCollision.up = false;
         this.player.body.checkCollision.left = false;
@@ -82,6 +87,9 @@ export default class Game extends Phaser.Scene{
             if(platform.y >= scrollY + 700){
                 platform.y = scrollY - Phaser.Math.Between(50, 100);
                 platform.body.updateFromGameObject();
+
+                this.addCarrotAbove(platform);
+
             }
         });
 
@@ -111,6 +119,8 @@ export default class Game extends Phaser.Scene{
             sprite.x = -halfWidth;
         }
     }
+
+    
     /**
      * @param {Phaser.GameObjects.Sprite} sprite
      */
@@ -123,5 +133,14 @@ export default class Game extends Phaser.Scene{
 
         carrot.body.setSize(carrot.width, carrot.height);
         return carrot;
+    }
+
+    /**
+     * @param {Phaser.Physics.Arcade.Sprite} player
+     * @param {Carrot} carrot
+     */
+    handleCollectCarrot(player, carrot){
+        this.carrots.killAndHide(carrot);
+        this.physics.world.disableBody(carrot.body);
     }
 }
