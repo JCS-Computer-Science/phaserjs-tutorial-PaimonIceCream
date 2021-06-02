@@ -51,7 +51,6 @@ export default class Game extends Phaser.Scene{
         this.carrots = this.physics.add.group({
             classType: Carrot
         })
-        //this.carrots.get(240,320,'carrot')
 
         this.physics.add.collider(this.platforms, this.player);
         this.physics.add.collider(this.platforms, this.carrots);
@@ -129,9 +128,14 @@ export default class Game extends Phaser.Scene{
 
         /**@type {Phaser.Physics.Arcade.Sprite} */
         const carrot = this.carrots.get(sprite.x, y,'carrot');
-        this.add.existing(carrot);
 
+        carrot.setActive(true);
+        carrot.setVisible(true);
+
+        this.add.existing(carrot);
         carrot.body.setSize(carrot.width, carrot.height);
+
+        this.physics.world.enable(carrot);
         return carrot;
     }
 
