@@ -36,6 +36,8 @@ export default class Game extends Phaser.Scene{
         this.load.image('carrot', '/assets/carrot.png')
 
         this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.load.audio('jump', '/assets/mixkit-player-jumping-in-a-video-game-2043.wav');
     }
 
     create(){
@@ -91,6 +93,8 @@ export default class Game extends Phaser.Scene{
             this.player.setVelocityY(-300);
 
             this.player.setTexture('bunny-jump');
+
+            this.sound.play('jump');
         }
 
         const vy = this.player.body.velocity.y;
