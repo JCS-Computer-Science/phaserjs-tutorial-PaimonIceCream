@@ -1,5 +1,3 @@
-console.log("Loading...");
-
 import Phaser from "./lib/phaser.js"
 
 import Game from './scenes/Game.js'
@@ -16,7 +14,7 @@ export default new Phaser.Game({
             gravity:{
                 y:200
             },
-            debug:true
+            debug:false
         }
     }
 })
